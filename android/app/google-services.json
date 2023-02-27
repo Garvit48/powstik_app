@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "873020191475",
+    "project_id": "powstikapp",
+    "storage_bucket": "powstikapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:873020191475:android:683e242989e890c5077d86",
+        "android_client_info": {
+          "package_name": "com.example.powstik_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "873020191475-ck76tbvtvdhcaesg5lfbikrvi0qa0p0n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuxU3pqskBu3wEa62uHwtA8qPCu7bVT7I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "873020191475-ck76tbvtvdhcaesg5lfbikrvi0qa0p0n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
