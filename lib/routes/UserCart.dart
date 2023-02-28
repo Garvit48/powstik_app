@@ -47,9 +47,9 @@ class _UserCartState extends State<UserCart> {
     setState(() => _products.removeWhere((element) => element["id"] == id));
     setState(
         () => _activeSelection.removeWhere((element) => element["id"] == id));
-    _database
-        .child("/paths/userCarts/${auth.currentUser!.uid}/cart/")
-        .set(_activeSelection);
+
+    print(
+        _database.child("/paths/userCarts/${auth.currentUser!.uid}/cart/$id"));
   }
 
   @override

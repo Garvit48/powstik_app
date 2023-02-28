@@ -7,14 +7,14 @@ import 'UserCart.dart';
 final List<Map> _products = [
   {
     "id": "1",
-    "title": "Sudo – Keema Samosa (250gm/Pack)",
+    "title": "Sudo Keema Samosa (250gm/Pack)",
     "price": "330.00",
     "quantity": "1",
     "image": "assets/p1.jpg"
   },
   {
     "id": "2",
-    "title": "Sudo – Plant Based Burger Patty (300gm)",
+    "title": "Sudo - Plant Based Burger Patty (300gm)",
     "price": "330.00",
     "quantity": "1",
     "image": "assets/p2.jpg"
@@ -22,7 +22,7 @@ final List<Map> _products = [
   {
     "id": "3",
     "title":
-        "Mindful Healthy Trail Mix with Fig & Raisin – Dry Fruit, Tropical Fruits & Nuts, 200g",
+        "Mindful Healthy Trail Mix with Fig & Raisin Dry Fruit, Tropical Fruits & Nuts, 200g",
     "price": "315.00",
     "quantity": "1",
     "image": "assets/p3.jpg"
@@ -30,14 +30,14 @@ final List<Map> _products = [
   {
     "id": "4",
     "title":
-        "Mindful Healthy Trail Mix with Papaya & Pineapple – Dry Fruit, Tropical Fruits & Nuts, 200g",
+        "Mindful Healthy Trail Mix with Papaya & Pineapple Dry Fruit, Tropical Fruits & Nuts, 200g",
     "price": "315.00",
     "quantity": "1",
     "image": "assets/p4.jpg"
   },
   {
     "id": "5",
-    "title": "Mindful Cashew – Oregano 300gm",
+    "title": "Mindful Cashewm Oregano 300gm",
     "price": "550.00",
     "quantity": "1",
     "image": "assets/p5.jpg"
@@ -50,14 +50,14 @@ final List<Map> _products = [
   },
   {
     "id": "7",
-    "title": "Sudo-Chicken Popcorn",
+    "title": "Sudo Chicken Popcorn",
     "price": "330.00",
     "quantity": "1",
     "image": "assets/p7.jpg"
   },
   {
     "id": "8",
-    "title": "Sudo – Vegetarian Galouti Kebab (250gm)",
+    "title": "Sudo mVegetarian Galouti Kebab (250gm)",
     "price": "330.00",
     "quantity": "1",
     "image": "assets/p8.jpg"
@@ -65,7 +65,7 @@ final List<Map> _products = [
   {
     "id": "9",
     "title": "Sudo-Plant Based Chicken Miracle Momos (230gm)",
-    "price": "330",
+    "price": "330.00",
     "quantity": "1",
     "image": "assets/p9.jpg"
   },
