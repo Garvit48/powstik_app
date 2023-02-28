@@ -14,7 +14,7 @@ class App extends StatelessWidget {
           if (snapshot.hasData) {
             return HomePage(theme: theme);
           } else {
-            return HomePage(theme: theme);
+            return AuthPage(theme: theme);
           }
         });
   }

@@ -6,7 +6,7 @@ Map _lightTheme = {
   "primaryColor": Color.fromARGB(255, 255, 255, 255),
   "secondaryColor": Color.fromARGB(255, 20, 20, 20),
   "accentColor": Color.fromARGB(255, 22, 190, 72),
-  "subtextColor": Color.fromARGB(255, 143, 143, 143),
+  "subtextColor": Color.fromARGB(255, 68, 68, 68),
   "errorColor": Color.fromARGB(255, 255, 0, 92)
 };
 

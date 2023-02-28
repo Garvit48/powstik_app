@@ -4,53 +4,76 @@ import 'package:flutter/material.dart';
 import '../components/ThemeCard.dart';
 import 'UserCart.dart';
 
-final List<Map<String, String>> _products = [
+final List<Map> _products = [
   {
+    "id": "1",
     "title": "Sudo – Keema Samosa (250gm/Pack)",
     "price": "330.00",
+    "quantity": "1",
     "image": "assets/p1.jpg"
   },
   {
+    "id": "2",
     "title": "Sudo – Plant Based Burger Patty (300gm)",
     "price": "330.00",
+    "quantity": "1",
     "image": "assets/p2.jpg"
   },
   {
+    "id": "3",
     "title":
         "Mindful Healthy Trail Mix with Fig & Raisin – Dry Fruit, Tropical Fruits & Nuts, 200g",
     "price": "315.00",
+    "quantity": "1",
     "image": "assets/p3.jpg"
   },
   {
+    "id": "4",
     "title":
         "Mindful Healthy Trail Mix with Papaya & Pineapple – Dry Fruit, Tropical Fruits & Nuts, 200g",
     "price": "315.00",
+    "quantity": "1",
     "image": "assets/p4.jpg"
   },
   {
+    "id": "5",
     "title": "Mindful Cashew – Oregano 300gm",
-    "price": "550",
+    "price": "550.00",
+    "quantity": "1",
     "image": "assets/p5.jpg"
   },
-  {"title": "5kg Low GI Combo", "price": "1099.00", "image": "assets/p6.jpg"},
   {
+    "id": "6",
+    "title": "5kg Low GI Combo",
+    "price": "1099.00",
+    "image": "assets/p6.jpg"
+  },
+  {
+    "id": "7",
     "title": "Sudo-Chicken Popcorn",
     "price": "330.00",
+    "quantity": "1",
     "image": "assets/p7.jpg"
   },
   {
+    "id": "8",
     "title": "Sudo – Vegetarian Galouti Kebab (250gm)",
     "price": "330.00",
+    "quantity": "1",
     "image": "assets/p8.jpg"
   },
   {
+    "id": "9",
     "title": "Sudo-Plant Based Chicken Miracle Momos (230gm)",
     "price": "330",
+    "quantity": "1",
     "image": "assets/p9.jpg"
   },
   {
+    "id": "10",
     "title": "Sudo-Vegan Burger Patty and Popcorn (250gm/Pack)",
-    "price": "630",
+    "price": "630.00",
+    "quantity": "1",
     "image": "assets/p10.jpg"
   },
 ];
@@ -64,12 +87,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final database = FirebaseDatabase.instance.ref();
+  final _database = FirebaseDatabase.instance.ref();
   List<Map> _activeSelection = _products;
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    //final cartRef = database.child("/paths/userCarts/${auth.currentUser!.uid}/cart");
+    final cartRef =
+        _database.child("/paths/userCarts/${auth.currentUser!.uid}/cart");
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 212,
@@ -161,6 +191,7 @@ class _HomePageState extends State<HomePage> {
             child: Wrap(
                 children: _activeSelection
                     .map<Widget>((Map product) => ThemeCard(
+                        hint: "Quantity",
                         cardInfo: product,
                         buttonInfo: {
                           "preColor": const Color.fromARGB(255, 255, 88, 0),
@@ -169,7 +200,12 @@ class _HomePageState extends State<HomePage> {
                           "postText": "Added to Cart"
                         },
                         theme: widget.theme,
-                        method: () => print("No internet")))
+                        method: () {
+                          cartRef
+                              .update({product["id"]: product})
+                              .then((value) => print("Success"))
+                              .catchError((error) => print(error));
+                        }))
                     .toList())),
       ),
     );

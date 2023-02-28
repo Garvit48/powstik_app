@@ -4,36 +4,6 @@ import 'package:firebase_database/firebase_database.dart';
 import './HomePage.dart';
 import '../components/ThemeCard.dart';
 
-final List<Map<String, String>> _products = [
-  {
-    "title": "Sudo – Keema Samosa (250gm/Pack)",
-    "price": "330.00",
-    "image": "assets/p1.jpg"
-  },
-  {
-    "title": "Sudo – Plant Based Burger Patty (300gm)",
-    "price": "330.00",
-    "image": "assets/p2.jpg"
-  },
-  {
-    "title":
-        "Mindful Healthy Trail Mix with Papaya & Pineapple – Dry Fruit, Tropical Fruits & Nuts, 200g",
-    "price": "315.00",
-    "image": "assets/p4.jpg"
-  },
-  {"title": "5kg Low GI Combo", "price": "1099.00", "image": "assets/p6.jpg"},
-  {
-    "title": "Sudo – Vegetarian Galouti Kebab (250gm)",
-    "price": "330.00",
-    "image": "assets/p8.jpg"
-  },
-  {
-    "title": "Sudo-Vegan Burger Patty and Popcorn (250gm/Pack)",
-    "price": "630",
-    "image": "assets/p10.jpg"
-  },
-];
-
 class UserCart extends StatefulWidget {
   const UserCart({super.key, required this.user, required this.theme});
   final String user;
@@ -43,7 +13,46 @@ class UserCart extends StatefulWidget {
 }
 
 class _UserCartState extends State<UserCart> {
-  List<Map<String, String>> _activeSelection = _products;
+  final _database = FirebaseDatabase.instance.ref();
+  final _auth = FirebaseAuth.instance;
+  List _products = [];
+  List _activeSelection = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _setListners();
+  }
+
+  void _setListners() {
+    _database
+        .child("/paths/userCarts/${auth.currentUser!.uid}/cart/")
+        .onValue
+        .listen((event) {
+      if (event.snapshot.value != null) {
+        final List data = event.snapshot.value as List;
+        final filteredData = data.where((elem) => elem != null);
+
+        setState(() {
+          if (_products.isEmpty) {
+            _activeSelection = filteredData.toList();
+          }
+          _products = filteredData.toList();
+        });
+      }
+    });
+  }
+
+  void _removeItem(String id) {
+    setState(() => _products.removeWhere((element) => element["id"] == id));
+    setState(
+        () => _activeSelection.removeWhere((element) => element["id"] == id));
+    _database
+        .child("/paths/userCarts/${auth.currentUser!.uid}/cart/")
+        .set(_activeSelection);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -84,7 +93,7 @@ class _UserCartState extends State<UserCart> {
                     child: TextField(
                         onChanged: (target) {
                           setState(() => _activeSelection = _products
-                              .where((Map product) => product["title"]
+                              .where((dynamic product) => product["title"]
                                   .toLowerCase()
                                   .contains(target.toLowerCase()))
                               .toList());
@@ -126,8 +135,9 @@ class _UserCartState extends State<UserCart> {
         child: Center(
             child: Wrap(
                 children: _activeSelection
-                    .map<Widget>((Map product) => ThemeCard(
+                    .map<Widget>((dynamic product) => ThemeCard(
                         cardInfo: product,
+                        hint: "Quantity",
                         buttonInfo: const {
                           "postColor": Color.fromARGB(255, 255, 0, 85),
                           "preColor": Color.fromARGB(255, 255, 0, 85),
@@ -135,8 +145,7 @@ class _UserCartState extends State<UserCart> {
                           "postText": "Remove from Cart"
                         },
                         theme: widget.theme,
-                        method: () =>
-                            setState(() => _activeSelection.remove(product))))
+                        method: () => _removeItem(product["id"])))
                     .toList())),
       ),
     );
