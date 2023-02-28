@@ -1,8 +1,8 @@
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import './HomePage.dart';
 import '../components/ThemeCard.dart';
-import 'UserCart.dart';
 
 final List<Map<String, String>> _products = [
   {
@@ -17,36 +17,15 @@ final List<Map<String, String>> _products = [
   },
   {
     "title":
-        "Mindful Healthy Trail Mix with Fig & Raisin – Dry Fruit, Tropical Fruits & Nuts, 200g",
-    "price": "315.00",
-    "image": "assets/p3.jpg"
-  },
-  {
-    "title":
         "Mindful Healthy Trail Mix with Papaya & Pineapple – Dry Fruit, Tropical Fruits & Nuts, 200g",
     "price": "315.00",
     "image": "assets/p4.jpg"
   },
-  {
-    "title": "Mindful Cashew – Oregano 300gm",
-    "price": "550",
-    "image": "assets/p5.jpg"
-  },
   {"title": "5kg Low GI Combo", "price": "1099.00", "image": "assets/p6.jpg"},
-  {
-    "title": "Sudo-Chicken Popcorn",
-    "price": "330.00",
-    "image": "assets/p7.jpg"
-  },
   {
     "title": "Sudo – Vegetarian Galouti Kebab (250gm)",
     "price": "330.00",
     "image": "assets/p8.jpg"
-  },
-  {
-    "title": "Sudo-Plant Based Chicken Miracle Momos (230gm)",
-    "price": "330",
-    "image": "assets/p9.jpg"
   },
   {
     "title": "Sudo-Vegan Burger Patty and Popcorn (250gm/Pack)",
@@ -55,21 +34,17 @@ final List<Map<String, String>> _products = [
   },
 ];
 
-final auth = FirebaseAuth.instance;
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.theme});
+class UserCart extends StatefulWidget {
+  const UserCart({super.key, required this.user, required this.theme});
+  final String user;
   final Map theme;
-  State<HomePage> createState() => _HomePageState();
+
+  State<UserCart> createState() => _UserCartState();
 }
 
-class _HomePageState extends State<HomePage> {
-  final database = FirebaseDatabase.instance.ref();
-  List<Map> _activeSelection = _products;
-
-  @override
+class _UserCartState extends State<UserCart> {
+  List<Map<String, String>> _activeSelection = _products;
   Widget build(BuildContext context) {
-    //final cartRef = database.child("/paths/userCarts/${auth.currentUser!.uid}/cart");
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 212,
@@ -82,33 +57,24 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                     padding: const EdgeInsets.fromLTRB(10, 44, 0, 0),
                     child: IconButton(
-                        onPressed: () => FirebaseAuth.instance.signOut(),
+                        onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    HomePage(theme: widget.theme))),
                         icon: Icon(
-                          Icons.logout,
+                          Icons.arrow_back_ios,
                           size: 38,
                           color: widget.theme["secondaryColor"],
                         ))),
                 Padding(
-                    padding: EdgeInsets.fromLTRB(58, 44, 0, 0),
+                    padding: EdgeInsets.fromLTRB(20, 44, 0, 0),
                     child: Text(
-                      "Products",
+                      "Shopping Cart",
                       style: TextStyle(
                           fontSize: 40,
                           fontFamily: "ManropeBold",
                           color: widget.theme["secondaryColor"]),
                     )),
-                Padding(
-                    padding: EdgeInsets.fromLTRB(44, 44, 0, 0),
-                    child: IconButton(
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => UserCart(
-                                    user: "Test", theme: widget.theme))),
-                        icon: Icon(
-                          Icons.shopping_cart,
-                          size: 40,
-                          color: widget.theme["secondaryColor"],
-                        )))
               ],
             ),
             Padding(
@@ -162,17 +128,17 @@ class _HomePageState extends State<HomePage> {
                 children: _activeSelection
                     .map<Widget>((Map product) => ThemeCard(
                         cardInfo: product,
-                        buttonInfo: {
-                          "preColor": const Color.fromARGB(255, 255, 88, 0),
-                          "postColor": widget.theme["subtextColor"],
-                          "preText": "Add to Cart",
-                          "postText": "Added to Cart"
+                        buttonInfo: const {
+                          "postColor": Color.fromARGB(255, 255, 0, 85),
+                          "preColor": Color.fromARGB(255, 255, 0, 85),
+                          "preText": "Remove from Cart",
+                          "postText": "Remove from Cart"
                         },
                         theme: widget.theme,
-                        method: () => print("No internet")))
+                        method: () =>
+                            setState(() => _activeSelection.remove(product))))
                     .toList())),
       ),
     );
   }
 }
-//cartRef.set({"test": "test1"}).then((value) => print("Success")).catchError((error) => print(error))
