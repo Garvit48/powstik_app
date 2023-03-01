@@ -132,8 +132,8 @@ class _HomePageState extends State<HomePage> {
                     child: IconButton(
                         onPressed: () => Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) => UserCart(
-                                    user: "Test", theme: widget.theme))),
+                                builder: (context) =>
+                                    UserCart(theme: widget.theme))),
                         icon: Icon(
                           Icons.shopping_cart,
                           size: 40,

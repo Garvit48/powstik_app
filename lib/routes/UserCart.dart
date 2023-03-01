@@ -5,8 +5,7 @@ import './HomePage.dart';
 import '../components/ThemeCard.dart';
 
 class UserCart extends StatefulWidget {
-  const UserCart({super.key, required this.user, required this.theme});
-  final String user;
+  const UserCart({super.key, required this.theme});
   final Map theme;
 
   State<UserCart> createState() => _UserCartState();
