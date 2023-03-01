@@ -88,7 +88,7 @@ class CheckoutPage extends StatelessWidget {
                 Padding(
                     padding: const EdgeInsets.fromLTRB(58, 44, 0, 0),
                     child: Text(
-                      "Cart",
+                      "Checkout",
                       style: TextStyle(
                           fontSize: 40,
                           fontFamily: "ManropeBold",

@@ -56,6 +56,8 @@ Instructions:
 
         - To checkout, click on the "Checkout" button in the top right corner of the page.
 
+        - You can only view teh checkout page if you have some items in your cart.
+
         - On the checkout screen, you will be shown a summary of your purchase.
 
         - Once you click on checkout, the payment will be completed and your cart will be emptied adn you will be redirected to the Ecommerce/Browse page.
@@ -71,7 +73,7 @@ Instructions:
     SPECIAL FEATURES OF CODE:
 
         - The theme of the app is set at the highest level and passed down to the children which ensures a single point of control, making it easy to control the themeing of the entire app.
-        
+
         - The project structure has been divided into meaningful components (folders) like "components/" containing reusable custom Widget classes (components). The "routes/" folder contains all the pages that that app has that can be navigated.
 
 
