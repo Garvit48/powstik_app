@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import './HomePage.dart';
 import '../components/ThemeCard.dart';
+import 'CheckoutPage.dart';
+import 'dart:convert';
 
 class UserCart extends StatefulWidget {
   const UserCart({super.key, required this.theme});
@@ -14,6 +16,7 @@ class UserCart extends StatefulWidget {
 class _UserCartState extends State<UserCart> {
   final _database = FirebaseDatabase.instance.ref();
   final _auth = FirebaseAuth.instance;
+  dynamic parsedData;
   List _products = [];
   List _activeSelection = [];
 
@@ -25,19 +28,30 @@ class _UserCartState extends State<UserCart> {
 
   void _setListners() {
     _database
-        .child("/paths/userCarts/${auth.currentUser!.uid}/cart/")
+        .child("/paths/userCarts/${_auth.currentUser!.uid}/cart")
         .onValue
         .listen((event) {
       if (event.snapshot.value != null) {
-        final List data = event.snapshot.value as List;
-        final filteredData = data.where((elem) => elem != null);
-
-        setState(() {
-          if (_products.isEmpty) {
-            _activeSelection = filteredData.toList();
-          }
-          _products = filteredData.toList();
-        });
+        final data = event.snapshot.value;
+        print(data.runtimeType);
+        if (data.runtimeType == List<Object?>) {
+          final parsedData = data as List;
+          final filteredData = parsedData.where((elem) => elem != null);
+          setState(() {
+            if (_products.isEmpty) {
+              _activeSelection = filteredData.toList();
+            }
+            _products = filteredData.toList();
+          });
+        } else {
+          final parsedData = data as Map;
+          setState(() {
+            if (_products.isEmpty) {
+              _activeSelection = parsedData.values.toList();
+            }
+            _products = parsedData.values.toList();
+          });
+        }
       }
     });
   }
@@ -48,7 +62,7 @@ class _UserCartState extends State<UserCart> {
         () => _activeSelection.removeWhere((element) => element["id"] == id));
 
     _database
-        .child("/paths/userCarts/${auth.currentUser!.uid}/cart/$id")
+        .child("/paths/userCarts/${_auth.currentUser!.uid}/cart/$id")
         .remove();
   }
 
@@ -63,8 +77,8 @@ class _UserCartState extends State<UserCart> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 44, 0, 0),
+                Container(
+                    margin: const EdgeInsets.fromLTRB(10, 44, 0, 0),
                     child: IconButton(
                         onPressed: () => Navigator.of(context).push(
                             MaterialPageRoute(
@@ -75,15 +89,26 @@ class _UserCartState extends State<UserCart> {
                           size: 38,
                           color: widget.theme["secondaryColor"],
                         ))),
-                Padding(
-                    padding: EdgeInsets.fromLTRB(20, 44, 0, 0),
+                Container(
+                    margin: const EdgeInsets.fromLTRB(20, 44, 0, 0),
                     child: Text(
-                      "Shopping Cart",
+                      "Cart",
                       style: TextStyle(
                           fontSize: 40,
                           fontFamily: "ManropeBold",
                           color: widget.theme["secondaryColor"]),
                     )),
+                Container(
+                    margin: const EdgeInsets.fromLTRB(168, 28, 0, 0),
+                    child: IconButton(
+                      onPressed: (_products.isEmpty)
+                          ? null
+                          : () => Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => CheckoutPage(
+                                  theme: widget.theme, items: _products))),
+                      icon: Icon(Icons.shopping_cart_checkout,
+                          size: 42, color: widget.theme["secondaryColor"]),
+                    ))
               ],
             ),
             Padding(
@@ -129,7 +154,6 @@ class _UserCartState extends State<UserCart> {
                                 fontWeight: FontWeight.bold)))))
           ],
         ),
-        actions: const <Widget>[],
       ),
       body: SingleChildScrollView(
         child: Center(

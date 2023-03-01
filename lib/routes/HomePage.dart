@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ final List<Map> _products = [
   },
   {
     "id": "2",
-    "title": "Sudo - Plant Based Burger Patty (300gm)",
+    "title": "Sudo Plant Based Burger Patty (300gm)",
     "price": "330.00",
     "quantity": "1",
     "image": "assets/p2.jpg"
@@ -89,17 +90,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _database = FirebaseDatabase.instance.ref();
   List<Map> _activeSelection = _products;
-  @override
-  void setState(fn) {
-    if (mounted) {
-      super.setState(fn);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final cartRef =
-        _database.child("/paths/userCarts/${auth.currentUser!.uid}/cart");
+        _database.child("/paths/userCarts/${auth.currentUser!.uid}/cart/");
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 212,

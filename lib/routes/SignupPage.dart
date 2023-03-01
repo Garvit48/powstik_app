@@ -159,7 +159,6 @@ class _SignupPageState extends State<SignupPage> {
                                           password:
                                               passwordController.text.trim())
                                       .then((res) {
-                                    setState(() => _busy = false);
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) =>
@@ -169,6 +168,7 @@ class _SignupPageState extends State<SignupPage> {
                                     print(e);
                                     setState(() => _busy = false);
                                   });
+                                  setState(() => _busy = false);
                                 }
                                 setState(() {
                                   _busy = true;
