@@ -72,8 +72,7 @@ class _AuthPageState extends State<AuthPage> {
                                           ? widget.theme["secondaryColor"]
                                           : widget.theme["errorColor"],
                                       width: 2.0)),
-                              label: const Text(
-                                  "Institute Email / Registration Number"),
+                              label: const Text("Email"),
                               labelStyle: TextStyle(
                                   fontSize: 16.0,
                                   color: widget.theme["secondaryColor"],
